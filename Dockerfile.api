@@ -1,0 +1,9 @@
+FROM python:3.10-slim-bookworm
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+COPY ./app /app
+COPY ./pyproject.toml ./uv.lock ./README.md ./
+
+RUN uv sync --frozen
+
+ENTRYPOINT ["uv", "run"]

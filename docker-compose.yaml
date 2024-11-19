@@ -10,3 +10,23 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - mongo_network
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: api
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongo
+    environment:
+      USERNAME: root
+      PASSWORD: example
+    networks:
+      - mongo_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+networks:
+  mongo_network:

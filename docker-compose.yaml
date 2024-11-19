@@ -15,7 +15,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile
     container_name: api
     ports:
       - 8000:8000
@@ -27,6 +27,18 @@ services:
     networks:
       - mongo_network
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  gradio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gradio
+    ports:
+      - 7860:7860
+    depends_on:
+      - api
+    networks:
+      - mongo_network
+    command: python gradio_app.py
 
 networks:
   mongo_network:

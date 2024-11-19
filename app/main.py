@@ -10,4 +10,4 @@ app.include_router(conversational.router)
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the Conversational API!"}
+    return {"message": "Welcome to the carnival API!"}

@@ -1,2 +1,2 @@
 # didactic-carnival
-A carnival very didactic
+A carnival that like gradio and fastapi

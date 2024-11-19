@@ -3,7 +3,9 @@ import pymongo
 from app.config import settings
 from app.schemas import ConversationCreate, ConversationResponse
 
-client = pymongo.MongoClient(f"mongodb://{settings.HOST}:{settings.PORT}/")
+client = pymongo.MongoClient(
+    f"mongodb://{settings.USERNAME}:{settings.PASSWORD}@{settings.HOST}:{settings.PORT}/"
+)
 db = client[settings.DB_NAME]
 collection = db[settings.COLLECTION_NAME]
 
@@ -19,7 +21,7 @@ async def create_conversation(
     Returns:
         ConversationResponse: The created conversation
     """
-    conversation_dict = conversation.dict()
+    conversation_dict = conversation.model_dump()
     result = collection.insert_one(conversation_dict)
     return {**conversation_dict, "id": str(result.inserted_id)}
 
@@ -33,7 +35,8 @@ async def get_conversation(conversation_id: str) -> ConversationResponse | None:
     Returns:
         ConversationResponse | None: The conversation if found, else None
     """
-    document = collection.find_one({"_id": pymongo.ObjectId(conversation_id)})
+    query = {"user_id": conversation_id}
+    document = collection.find_one(query)
     if document:
         document["id"] = str(document["_id"])
         del document["_id"]

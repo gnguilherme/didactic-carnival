@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     PORT: int = 27017
     DB_NAME: str = "mydatabase"
     COLLECTION_NAME: str = "mycollection"
+    USERNAME: str
+    PASSWORD: str
 
     class Config:
         env_file = ".env"
